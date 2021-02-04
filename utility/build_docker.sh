@@ -1,1 +1,1 @@
-docker build -t DeepMVS_forked -f ./.devcontainer/Dockerfile .
+docker build -t deepmvsforked -f ./.devcontainer/Dockerfile .
