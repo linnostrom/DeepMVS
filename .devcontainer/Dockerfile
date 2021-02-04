@@ -25,7 +25,7 @@ RUN apt-get update -y && apt-get install -y \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     && apt-get install python-pip -y \
-    && pip install imageio==2.2.0\
+    && pip install imageio\
     && pip install future
 RUN pip install conda
 
