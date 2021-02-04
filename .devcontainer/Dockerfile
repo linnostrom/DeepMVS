@@ -1,5 +1,5 @@
 
-FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu16.04
 
 ENV TZ=Europe/Stockholm
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -27,21 +27,9 @@ RUN apt-get update -y && apt-get install -y \
     && apt-get install python-pip -y \
     && pip install imageio==2.2.0\
     && pip install future
-    #&& pip install torch==1.1.0 torchvision==0.3.0\
 RUN pip install conda
 
 RUN pip install torch torchvision 
-    #conda install pytorch==1.0.0
-
-    #&& conda install pytorch==1.0.0 torchvision==0.2.1 cuda100 -c pytorch\
-    #&& pip install torch==1.2.0 torchvision==0.4.0\
-    #&& pip install imageio==2.2.0\
-    #&& pip install torchvision==0.3.0\
-    #&& pip install torch==0.3.1 \
-    #&& conda install pytorch==1.1.0 torchvision==0.3.0 cudatoolkit=10.0 -c pytorch\
-    #&& pip install future
-    #&& pip install torch torchvision
-
 
 RUN pip install --upgrade pip && pip install pip install opencv-contrib-python
 RUN pip install -U matplotlib
