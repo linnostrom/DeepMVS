@@ -5,6 +5,8 @@ import imageio
 import numpy as np
 from scipy import linalg as la
 
+
+from metrics import get_metrics
 # Parse arguments.
 parser = argparse.ArgumentParser(description = "Evaluate predicted disparity maps.")
 parser.add_argument("--image_path", dest = "image_path", help = "Path to the images.", required = True)
@@ -152,7 +154,7 @@ def get_rephoto_diff(rephoto_path, sparse_model, frame_idx, predict_depth, mask 
 print "Loading the sparse model..."
 sparse_model = ColmapSparse(sparse_path, image_path, image_width, image_height)
 print "Successfully loaded the sparse model."
-
+E = []
 # Loop through all reference images.
 errors_L1 = []
 errors_rephoto = []
@@ -204,8 +206,17 @@ for (frame_idx, frame) in enumerate(sparse_model.image_list.images):
 	else:
 		raise ValueError("output_type is not supported")
 	
-	
-	
+	shape = np.shape(gt_depth)
+	#print(shape, mask)
+
+	mask = 1.0 - (gt_depth < 0.5).astype(np.float32)
+                        
+	mask = cv2.resize(mask, shape)
+
+	mask = ( gt_depth > 0.5)#.astype(np.float32)
+
+	e = get_metrics(output_depth,gt_depth,mask)
+	E.append(e)
 	# Compute L1 error.
 	valid_mask = np.logical_and(gt_valid, output_valid)
 	error_L1 = np.abs(output_depth - gt_depth)[valid_mask]
@@ -217,6 +228,7 @@ for (frame_idx, frame) in enumerate(sparse_model.image_list.images):
 		errors_rephoto.extend(error_rephoto.tolist())
 
 # Report errors:
+print(np.shape(E), np.mean(E,0))
 mean_L1 = np.mean(errors_L1)
 print "Disparity L1 error = {:f}, number of valid pixels = {:d}".format(mean_L1, len(errors_L1))
 if not skip_rephoto:
