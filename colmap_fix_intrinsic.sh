@@ -6,7 +6,7 @@ colmap feature_extractor \
    --image_path $DATASET_PATH/images \
    --ImageReader.single_camera $2 \
    --ImageReader.camera_model PINHOLE \
-   --ImageReader.camera_params=240,240,128,96 \
+   --ImageReader.camera_params= 240,240,128,96 \
 
 colmap exhaustive_matcher \
    --database_path $DATASET_PATH/database.db \
